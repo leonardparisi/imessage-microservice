@@ -11,4 +11,8 @@ export function setup_routes(app: any) {
     );
     res.send("ok");
   });
+
+  app.get("/tunnel_url", (req: any, res: any) => {
+    res.send(app.get("tunnel_url"));
+  });
 }

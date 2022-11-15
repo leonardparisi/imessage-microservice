@@ -14,3 +14,11 @@ POST to `http://localhost:3000/send_text` with a body of the following format:
     date = new Date() // when to send the text in ISO format
 }
 ```
+
+Note: you must send a header `API-Key` with your API key.
+
+# Running the app permanentlty
+
+```
+pm2 start dist/app.js
+```
