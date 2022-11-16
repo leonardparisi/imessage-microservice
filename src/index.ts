@@ -2,8 +2,8 @@ import express from "express";
 import winston from "winston";
 import { api_key } from "./helpers/api_key_middleware";
 import { logger } from "./helpers/logging";
+import { openTunnel, updateTunnelURL } from "./helpers/tunnels";
 import { setup_routes } from "./routes";
-import localtunnel from "localtunnel";
 
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
@@ -31,12 +31,9 @@ app.listen(port, () => {
 
 if (process.env.NODE_ENV === "production") {
   (async () => {
-    const tunnel = await localtunnel({ port: Number(process.env.PORT!) });
-    logger.info("Opened tunnel", { url: tunnel.url });
-    app.set("tunnel_url", tunnel.url);
-    tunnel.on("close", () => {
-      logger.info("Closed tunnel");
-    });
+    const tunnelURL = await openTunnel();
+    app.set("tunnel_url", tunnelURL);
+    updateTunnelURL(tunnelURL);
   })();
 }
 
